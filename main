@@ -1,0 +1,32 @@
+pip install numpy
+import numpy as np
+
+# Define simple keywords that indicate fake or real news (for demonstration)
+FAKE_KEYWORDS = np.array(["hoax", "conspiracy", "clickbait", "fake", "fraud", "misleading"]) # array of words that will get detected to be fake 
+REAL_KEYWORDS = np.array(["confirmed", "official", "authentic", "verified", "research"])
+
+# Function to classify news based on keyword matching
+def classify_news(text): # we throw texts into the function and start spliting 
+    words = np.array(text.lower().split())  # Split text into words and lowercase
+
+    # Check for presence of fake and real keywords
+    fake_matches = np.intersect1d(words, FAKE_KEYWORDS) # return two intersections between two array s
+    real_matches = np.intersect1d(words, REAL_KEYWORDS)
+
+    # Classify based on number of keyword matches
+    if len(fake_matches) > len(real_matches):
+        return "Fake"
+    elif len(real_matches) > len(fake_matches):
+        return "Real"
+    else:
+        return "Unclear"
+
+# Test the classifier with user input
+while True:
+    user_input = input("Enter a news headline or article (or 'exit' to quit): ")
+    if user_input.lower() == 'exit':
+        print("Goodbye!")
+        break
+
+    result = classify_news(user_input)
+    print(f"The news is classified as: {result}")
